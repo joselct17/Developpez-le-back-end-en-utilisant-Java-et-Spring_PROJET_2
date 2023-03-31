@@ -35,6 +35,7 @@ export class DetailComponent implements OnInit {
     this.rentalsService
       .detail(id)
       .subscribe((rental: Rental) => this.rental = rental);
+    console.log(this.rental);
   }
 
   public back() {
