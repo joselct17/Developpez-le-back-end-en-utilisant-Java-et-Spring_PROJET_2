@@ -1,13 +1,13 @@
-package com.example.OC.JAVA.SPRING.API.PROJET3;
+package com.openclassrooms.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OcJavaSpringApiProjet3Application {
+public class SpringApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OcJavaSpringApiProjet3Application.class, args);
+		SpringApplication.run(SpringApiApplication.class, args);
 	}
 
 }
