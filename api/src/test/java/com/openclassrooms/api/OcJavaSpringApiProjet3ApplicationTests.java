@@ -1,4 +1,4 @@
-package com.example.OC.JAVA.SPRING.API.PROJET3;
+package com.openclassrooms.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
