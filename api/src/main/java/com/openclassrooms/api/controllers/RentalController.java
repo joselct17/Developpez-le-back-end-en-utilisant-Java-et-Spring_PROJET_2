@@ -7,11 +7,15 @@ import com.openclassrooms.api.entities.Rental;
 import com.openclassrooms.api.services.RentalService;
 import com.openclassrooms.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -45,8 +49,12 @@ public class RentalController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody CreateRentalRequestDTO dto) {
+	public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody CreateRentalRequestDTO dto, Authentication authentication) {
 		final Rental rental = rentalService.findById(id);
+		final Integer ownerId = userService.findByEmail(authentication.getName()).getId();
+		if(!Objects.equals(rental.getOwnerId(), ownerId)) {
+			return new ResponseEntity<>("", HttpStatus.UNAUTHORIZED);
+		}
 		ObjectMapper objectMapper = new ObjectMapper();
 		Rental mergedEntity = objectMapper.convertValue(dto, Rental.class);
 		mergedEntity.setId(rental.getId());
