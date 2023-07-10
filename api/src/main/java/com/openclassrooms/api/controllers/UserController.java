@@ -1,6 +1,6 @@
 package com.openclassrooms.api.controllers;
 
-import com.openclassrooms.api.dtos.GetUserResponseDTO;
+import com.openclassrooms.api.dtos.user.GetUserResponseDTO;
 import com.openclassrooms.api.entities.User;
 import com.openclassrooms.api.services.JwtService;
 import com.openclassrooms.api.services.UserService;

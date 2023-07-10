@@ -1,12 +1,10 @@
 package com.openclassrooms.api.entities;
 
-import com.openclassrooms.api.dtos.UserDTO;
+import com.openclassrooms.api.dtos.user.UserDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,7 +32,7 @@ public class User implements Serializable, UserDetails {
 
     @Column(updatable = false)
     @CreationTimestamp
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
@@ -62,7 +60,6 @@ public class User implements Serializable, UserDetails {
         this(dto.getName(), dto.getEmail(), dto.getPassword());
         this.setId(dto.getId());
     }
-
 
     public Integer getId() {
         return id;

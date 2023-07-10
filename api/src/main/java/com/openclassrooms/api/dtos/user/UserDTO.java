@@ -1,4 +1,4 @@
-package com.openclassrooms.api.dtos;
+package com.openclassrooms.api.dtos.user;
 
 
 import com.openclassrooms.api.entities.User;
@@ -51,6 +51,4 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
 }

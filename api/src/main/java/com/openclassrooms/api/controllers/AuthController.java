@@ -1,9 +1,9 @@
 package com.openclassrooms.api.controllers;
 
-import com.openclassrooms.api.dtos.AuthRequestDTO;
-import com.openclassrooms.api.dtos.AuthResponseDTO;
-import com.openclassrooms.api.dtos.GetUserResponseDTO;
-import com.openclassrooms.api.dtos.RegisterRequestDTO;
+import com.openclassrooms.api.dtos.auth.AuthRequestDTO;
+import com.openclassrooms.api.dtos.auth.AuthResponseDTO;
+import com.openclassrooms.api.dtos.user.GetUserResponseDTO;
+import com.openclassrooms.api.dtos.auth.RegisterRequestDTO;
 import com.openclassrooms.api.entities.User;
 import com.openclassrooms.api.services.AuthService;
 import com.openclassrooms.api.services.JwtService;

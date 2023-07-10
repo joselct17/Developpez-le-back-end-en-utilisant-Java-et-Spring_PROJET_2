@@ -1,16 +1,14 @@
 package com.openclassrooms.api.services;
 
 
-import com.openclassrooms.api.dtos.AuthRequestDTO;
-import com.openclassrooms.api.dtos.AuthResponseDTO;
-import com.openclassrooms.api.dtos.RegisterRequestDTO;
+import com.openclassrooms.api.dtos.auth.AuthRequestDTO;
+import com.openclassrooms.api.dtos.auth.AuthResponseDTO;
+import com.openclassrooms.api.dtos.auth.RegisterRequestDTO;
 import com.openclassrooms.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
