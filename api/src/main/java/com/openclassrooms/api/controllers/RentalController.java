@@ -1,5 +1,6 @@
 package com.openclassrooms.api.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.api.dtos.rental.CreateRentalRequestDTO;
 import com.openclassrooms.api.dtos.rental.RentalDTO;
 import com.openclassrooms.api.entities.Rental;
@@ -41,5 +42,15 @@ public class RentalController {
 		final List<Rental> rentals = rentalService.findAll();
 		final List<RentalDTO> dtos = rentals.stream().map(RentalDTO::new).toList();
 		return ResponseEntity.ok(dtos);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody CreateRentalRequestDTO dto) {
+		final Rental rental = rentalService.findById(id);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Rental mergedEntity = objectMapper.convertValue(dto, Rental.class);
+		mergedEntity.setId(rental.getId());
+		mergedEntity.setOwnerId(rental.getOwnerId());
+		return ResponseEntity.ok(rentalService.update(mergedEntity));
 	}
 }

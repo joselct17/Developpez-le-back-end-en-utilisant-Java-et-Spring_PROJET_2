@@ -10,7 +10,7 @@ public class GetUserResponseDTO {
     private String email;
     private String name;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
@@ -41,11 +41,11 @@ public class GetUserResponseDTO {
         this.name = name;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

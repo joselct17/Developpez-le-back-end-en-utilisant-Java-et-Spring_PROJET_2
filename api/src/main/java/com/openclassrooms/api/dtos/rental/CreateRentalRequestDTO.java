@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 
 public class CreateRentalRequestDTO {
 
-
 	private String name;
 
 	private Integer surface;

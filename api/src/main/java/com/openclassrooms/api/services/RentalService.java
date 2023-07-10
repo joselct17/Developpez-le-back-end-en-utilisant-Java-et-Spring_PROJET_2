@@ -30,4 +30,10 @@ public class RentalService {
         return "Rental created";
     }
 
+    public String update(Rental rental) {
+        repository.save(rental);
+        return "Rental updated";
+    }
+
+
 }
