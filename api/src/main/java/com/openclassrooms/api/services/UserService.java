@@ -1,6 +1,6 @@
 package com.openclassrooms.api.services;
 
-import com.openclassrooms.api.dtos.UserDTO;
+import com.openclassrooms.api.dtos.user.UserDTO;
 import com.openclassrooms.api.entities.User;
 import com.openclassrooms.api.exceptions.DuplicationException;
 import com.openclassrooms.api.exceptions.NotFoundException;

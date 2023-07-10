@@ -1,13 +1,20 @@
 package com.openclassrooms.api.entities;
 
-import com.openclassrooms.api.dtos.UserDTO;
+import com.openclassrooms.api.dtos.user.UserDTO;
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
+
 @Entity
+@Data
 public class User implements Serializable, UserDetails {
 
     @Id
@@ -23,6 +30,12 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false, length = 60)
     private String password;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public User() {
         super();
@@ -47,7 +60,6 @@ public class User implements Serializable, UserDetails {
         this(dto.getName(), dto.getEmail(), dto.getPassword());
         this.setId(dto.getId());
     }
-
 
     public Integer getId() {
         return id;

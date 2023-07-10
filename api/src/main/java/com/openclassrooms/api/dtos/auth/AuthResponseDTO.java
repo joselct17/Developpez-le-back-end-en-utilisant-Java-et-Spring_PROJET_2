@@ -1,4 +1,4 @@
-package com.openclassrooms.api.dtos;
+package com.openclassrooms.api.dtos.auth;
 
 public class AuthResponseDTO {
 	

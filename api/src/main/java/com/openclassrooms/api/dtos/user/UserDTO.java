@@ -1,7 +1,10 @@
-package com.openclassrooms.api.dtos;
+package com.openclassrooms.api.dtos.user;
 
 
 import com.openclassrooms.api.entities.User;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.lang.Nullable;
+
 import java.util.Set;
 
 public class UserDTO {
@@ -11,22 +14,10 @@ public class UserDTO {
 	private String email;
 	private String password;
 
-	public UserDTO() {
-		super();
-	}
-
-	public UserDTO(Integer id, String name, String email, Set<String> roles) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-	}
-
 	public UserDTO(User user) {
-		super();
-		this.id = user.getId();
-		this.name = user.getName();
-		this.email = user.getEmail();
+		this.setId(user.getId());
+		this.setName(user.getName());
+		this.setEmail(user.getEmail());
 	}
 
 	public Integer getId() {
@@ -44,7 +35,7 @@ public class UserDTO {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -60,6 +51,4 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
 }
