@@ -21,42 +21,41 @@ import java.util.Date;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-	
-	@Autowired
-	private JwtService jwtService;
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-		
-			final String authorization = request.getHeader("Authorization");
-			if (authorization != null && authorization.startsWith("Bearer ")) {
-		
-				final String token = authorization.substring(7);
-				final Claims claims = jwtService.getClaims(token);
-				if (claims.getExpiration().after(new Date())) {
+    @Autowired
+    private JwtService jwtService;
 
-					final String username = claims.getSubject();
-					final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					
-					final UsernamePasswordAuthenticationToken authToken =
-							new UsernamePasswordAuthenticationToken(
-									userDetails, null, userDetails.getAuthorities());
-				
-					authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-					SecurityContextHolder.getContext().setAuthentication(authToken);
-				}
-				
-			}
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-		}
-		
-		filterChain.doFilter(request, response);
-	}
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            final String authorization = request.getHeader("Authorization");
+
+            if (authorization != null && authorization.startsWith("Bearer ")) {
+                final String token = authorization.substring(7);
+                final Claims claims = jwtService.getClaims(token);
+                if (claims.getExpiration().after(new Date())) {
+                    final String username = claims.getSubject();
+                    final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    final UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+
+            }
+
+        }
+
+        filterChain.doFilter(request, response);
+    }
 
 }

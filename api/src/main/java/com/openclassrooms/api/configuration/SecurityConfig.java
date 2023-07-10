@@ -21,7 +21,8 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC = new String[]{
             "/test/**",
-            "/auth/**"
+            "api/auth/register",
+            "api/auth/login"
     };
 
     @Autowired

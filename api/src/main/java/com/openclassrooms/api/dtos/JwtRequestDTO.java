@@ -1,13 +1,13 @@
 package com.openclassrooms.api.dtos;
 
 public class JwtRequestDTO {
-    private String authorzation;
+    private String authorization;
 
-    public String getAuthorzation() {
-        return authorzation;
+    public String getAuthorization() {
+        return authorization;
     }
 
-    public void setAuthorzation(String authorzation) {
-        this.authorzation = authorzation;
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
     }
 }

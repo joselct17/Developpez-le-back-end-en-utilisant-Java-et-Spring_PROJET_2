@@ -19,9 +19,6 @@ public class AuthService {
 	@Autowired
 	private UserService userService;
 
-
-
-	
 	@Autowired
 	private JwtService jwtService;
 	
@@ -47,7 +44,7 @@ public class AuthService {
 		
 		return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
 	}
-	
+
 	public AuthResponseDTO authenticate(AuthRequestDTO dto) {
 		
 		authenticationManager.authenticate(

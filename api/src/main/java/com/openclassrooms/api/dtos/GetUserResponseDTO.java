@@ -5,7 +5,7 @@ import com.openclassrooms.api.entities.User;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class MeResponseDTO {
+public class GetUserResponseDTO {
 
     private String email;
     private String name;
@@ -16,7 +16,7 @@ public class MeResponseDTO {
 
     private Integer id;
 
-    public MeResponseDTO(User user) {
+    public GetUserResponseDTO(User user) {
         super();
         this.id = user.getId();
         this.email = user.getEmail();
