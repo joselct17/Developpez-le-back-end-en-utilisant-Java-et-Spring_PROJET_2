@@ -20,9 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] PUBLIC = new String[]{
+            "/swagger-ui/**",
             "/test/**",
             "api/auth/register",
-            "api/auth/login"
+            "api/auth/login",
+            "/swagger-resources/*",
+            "/v3/**"
     };
 
     @Autowired

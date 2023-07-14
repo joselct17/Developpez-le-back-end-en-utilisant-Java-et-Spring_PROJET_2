@@ -1,11 +1,11 @@
 package com.openclassrooms.api.entities;
 
+import com.openclassrooms.api.dtos.message.MessageDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "messages")
@@ -15,11 +15,13 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "rental_id")
-    private Integer rentalId;
+    @ManyToOne
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "message", length = 2000)
     private String message;
@@ -31,6 +33,12 @@ public class Message {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public Message(MessageDTO dto) {
+        this.message = dto.getMessage();
+        this.user = dto.getUser();
+        this.rental = dto.getRental();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -39,20 +47,20 @@ public class Message {
         this.id = id;
     }
 
-    public Integer getRentalId() {
-        return rentalId;
+    public Rental getRental() {
+        return rental;
     }
 
-    public void setRentalId(Integer rentalId) {
-        this.rentalId = rentalId;
+    public void setRentalId(Rental rental) {
+        this.rental = rental;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(User user) {
+        this.user = user;
     }
 
     public String getMessage() {

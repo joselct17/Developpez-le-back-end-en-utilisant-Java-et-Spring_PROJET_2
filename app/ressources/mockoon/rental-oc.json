@@ -170,13 +170,13 @@
           "fallbackTo404": false,
           "default": true,
           "databucketID": "",
-          "bodyType": "INLINE"
+          "bodyType": "FILE"
         },
         {
           "uuid": "5b6feffb-838b-4d88-8beb-fe4f9b22a4c8",
           "body": "",
           "latency": 0,
-          "statusCode": 401,
+          "statusCode": 200,
           "label": "",
           "headers": [],
           "filePath": "",
@@ -418,7 +418,7 @@
           "uuid": "dea1d991-2465-48e6-968f-9487eca83d70",
           "body": "{\n  \"message\": \"Rental created !\"\n}",
           "latency": 0,
-          "statusCode": 200,
+          "statusCode": 100,
           "label": "",
           "headers": [],
           "filePath": "",
