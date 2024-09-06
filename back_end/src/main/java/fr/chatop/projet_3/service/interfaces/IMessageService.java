@@ -1,4 +1,22 @@
 package fr.chatop.projet_3.service.interfaces;
 
-public interface IMessageService {
+import fr.chatop.projet_3.model.Message;
+import fr.chatop.projet_3.model.dto.MessageDto;
+
+import java.util.List;
+import java.util.Optional;
+
+ public interface IMessageService {
+
+
+   List<Message> getAllMessages();
+
+   Optional<Message> getMessageById(Integer id);
+
+   Message createMessage(MessageDto messageDto, Integer userId, Integer rentalId);
+
+   Message updateMessage(Integer id, MessageDto messageDto);
+
+   void deleteMessage(Integer id);
+
 }
