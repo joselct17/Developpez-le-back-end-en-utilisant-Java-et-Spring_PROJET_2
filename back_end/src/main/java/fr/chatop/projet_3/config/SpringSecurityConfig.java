@@ -3,7 +3,9 @@ package fr.chatop.projet_3.config;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -24,12 +26,16 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SpringSecurityConfig {
 
-  private String jwtKey = "laclegeneree256….";
+  private String jwtKey = "aVeryLongRandomKeyGeneratedForHMAC256WhichIsAtLeast32BytesLong";
 
+
+  @Bean
   public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
     return http.csrf(csrf->csrf.disable())
       .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .authorizeHttpRequests(auth->auth.anyRequest().authenticated())
+      .authorizeHttpRequests(auth->auth
+          .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+        .anyRequest().authenticated())
       .httpBasic(Customizer.withDefaults())
       .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
       .build();
@@ -40,23 +46,21 @@ public class SpringSecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  public UserDetailsService users() {
-    UserDetails user = User.builder().username("user").password(bCryptPasswordEncoder().encode("password")).roles("USER")
-      .build();
-    return new InMemoryUserDetailsManager(user);
-  }
-
 
   @Bean
   public JwtDecoder jwtDecoder() {
-    SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");
+    SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), "HmacSHA256");
     return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
   }
 
   @Bean
   public JwtEncoder jwtEncoder() {
     return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
   }
 
 
