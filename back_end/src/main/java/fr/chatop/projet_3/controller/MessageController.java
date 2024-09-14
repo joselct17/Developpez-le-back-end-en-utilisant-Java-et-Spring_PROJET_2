@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/messages")
+@RequestMapping("/api/messages")
 public class MessageController {
 
   private final IMessageService messageService;
