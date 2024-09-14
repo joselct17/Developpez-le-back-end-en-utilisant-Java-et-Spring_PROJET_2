@@ -5,6 +5,7 @@ import fr.chatop.projet_3.model.dto.RegisterUserDto;
 import fr.chatop.projet_3.repository.IUserRepository;
 import fr.chatop.projet_3.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class UsersServiceImpl implements IUserService {
 
   private final IUserRepository userRepository;
+  private final BCryptPasswordEncoder passwordEncoder;
 
   @Override
   public Users createUser(Users user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setCreatedAt(LocalDateTime.now());
     return userRepository.save(user);
   }
