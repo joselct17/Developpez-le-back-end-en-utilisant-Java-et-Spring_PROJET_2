@@ -29,7 +29,7 @@ public class Users {
   private String name;
 
   @Column(nullable = false)
-  private char[] password;
+  private String password;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
