@@ -7,7 +7,7 @@ import lombok.Data;
 public class RegisterUserDto {
   private String name;
   private String email;
-  private char[] password;
+  private String password;
 
   public RegisterUserDto(Users users) {
     this.name = users.getName();
