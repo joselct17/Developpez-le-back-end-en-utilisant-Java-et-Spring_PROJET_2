@@ -38,7 +38,9 @@ public class MessageController {
 
 
   @PostMapping
-  public ResponseEntity<Message> createMessage(@RequestBody MessageDto messageDto, @RequestParam Integer userId, @RequestParam Integer rentalId) {
+  public ResponseEntity<Message> createMessage(@RequestBody MessageDto messageDto) {
+    Integer userId = messageDto.getUserId();
+    Integer rentalId = messageDto.getRentalId();
     Message createdMessage = messageService.createMessage(messageDto, userId, rentalId);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
   }
