@@ -1,8 +1,12 @@
 package fr.chatop.projet_3.service.implementations;
 
 import fr.chatop.projet_3.model.Message;
+import fr.chatop.projet_3.model.Rentals;
+import fr.chatop.projet_3.model.Users;
 import fr.chatop.projet_3.model.dto.MessageDto;
 import fr.chatop.projet_3.repository.IMessagesRepository;
+import fr.chatop.projet_3.repository.IRentalsRepository;
+import fr.chatop.projet_3.repository.IUserRepository;
 import fr.chatop.projet_3.service.interfaces.IMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,8 @@ import java.util.Optional;
 public class MessageServiceImpl implements IMessageService {
 
   private final IMessagesRepository messageRepository;
+  private final IUserRepository userRepository;
+  private final IRentalsRepository rentalsRepository;
 
   public List<Message> getAllMessages() {
     return messageRepository.findAll();
@@ -26,12 +32,26 @@ public class MessageServiceImpl implements IMessageService {
   }
 
   public Message createMessage(MessageDto messageDto, Integer userId, Integer rentalId) {
+    // Vérifie que userId et rentalId ne sont pas nuls
+    if (userId == null || rentalId == null) {
+      throw new IllegalArgumentException("User ID and Rental ID must not be null");
+    }
+
+    Users user = userRepository.findById(userId)
+      .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+    Rentals rental = rentalsRepository.findById(rentalId)
+      .orElseThrow(() -> new IllegalArgumentException("Invalid rental ID"));
+
     Message message = new Message();
     message.setMessage(messageDto.getMessage());
+    message.setUser(user);
+    message.setRental(rental);
     message.setCreatedAt(LocalDateTime.now());
-    // Assign user and rental (fetch from DB using userId and rentalId)
+
     return messageRepository.save(message);
   }
+
 
   public Message updateMessage(Integer id, MessageDto messageDto) {
     Optional<Message> existingMessageOpt = messageRepository.findById(id);
