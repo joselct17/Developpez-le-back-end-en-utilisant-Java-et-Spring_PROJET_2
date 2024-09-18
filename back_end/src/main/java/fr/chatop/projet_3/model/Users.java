@@ -1,5 +1,6 @@
 package fr.chatop.projet_3.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,11 +38,17 @@ public class Users {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @OneToMany(mappedBy = "owner")
+  @OneToMany
   private List<Rentals> rentals;
 
-  @OneToMany(mappedBy = "user")
-  private List<Message> messages;
 
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+  }
 
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = LocalDateTime.now();
+  }
 }
