@@ -19,4 +19,6 @@ import java.util.Optional;
    void deleteUser(Integer id);
 
    Users getUserByEmail(String email);
-}
+
+   void updateRentalsUser(Users users);
+ }
