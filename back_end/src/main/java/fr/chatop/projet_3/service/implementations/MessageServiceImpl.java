@@ -45,6 +45,8 @@ public class MessageServiceImpl implements IMessageService {
 
     Message message = new Message();
     message.setMessage(messageDto.getMessage());
+
+
     message.setUser(user);
     message.setRental(rental);
     message.setCreatedAt(LocalDateTime.now());
