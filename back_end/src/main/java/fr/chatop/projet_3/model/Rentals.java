@@ -1,5 +1,7 @@
 package fr.chatop.projet_3.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,10 +44,14 @@ public class Rentals {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @ManyToOne
-  @JoinColumn(name = "owner_id", nullable = false)
-  private Users owner;
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+  }
 
-  @OneToMany(mappedBy = "rental")
-  private List<Message> messages;
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = LocalDateTime.now();
+  }
+
 }
