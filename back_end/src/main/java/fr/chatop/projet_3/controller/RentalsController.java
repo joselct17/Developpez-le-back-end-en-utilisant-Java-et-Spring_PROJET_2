@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -56,42 +57,45 @@ public class RentalsController {
     @RequestParam("description") String description,
     @RequestParam("picture") MultipartFile picture) throws IOException {
 
+    // Créer une nouvelle instance de Rentals
     Rentals rental = new Rentals();
     rental.setName(name);
     rental.setSurface(surface);
     rental.setPrice(price);
     rental.setDescription(description);
 
+    // Récupération de l'utilisateur courant
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
     Users currentUser = usersService.getUserByEmail(email);
 
-    rental.setOwner(currentUser);
+    // Ajouter la location à la liste des locations de l'utilisateur
+    List<Rentals> rentals = currentUser.getRentals();
+    rentals.add(rental);
+    currentUser.setRentals(rentals);
 
-
+    // Sauvegarder le fichier de l'image si non vide
     if (!picture.isEmpty()) {
-      // Sauvegarder le fichier sur le disque
-      String fileName = picture.getOriginalFilename();
-      String uploadDir = "uploads"; // Chemin relatif ou absolu où les fichiers sont stockés
-
-      // Créer le répertoire si nécessaire
+      String fileName = UUID.randomUUID().toString() + "_" + picture.getOriginalFilename();
+      String uploadDir = "uploads";
       Path uploadPath = Paths.get(uploadDir);
+
       if (!Files.exists(uploadPath)) {
         Files.createDirectories(uploadPath);
       }
 
-      // Sauvegarder le fichier
       Path filePath = uploadPath.resolve(fileName);
       Files.copy(picture.getInputStream(), filePath);
-
-      // Mettre à jour l'entité Rentals avec le chemin de l'image
       rental.setPicture(filePath.toString());
     } else {
       throw new RuntimeException("Picture file is empty");
     }
 
-    Rentals createdRental = rentalService.createRental(rental);
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdRental);
+    // Sauvegarder la location et mettre à jour l'utilisateur
+    rentalService.createRental(rental);
+    usersService.updateRentalsUser(currentUser); // Met à jour l'utilisateur avec la nouvelle location
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(rental);
   }
 
 
