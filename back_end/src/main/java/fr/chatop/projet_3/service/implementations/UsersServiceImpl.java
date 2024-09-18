@@ -59,4 +59,22 @@ public class UsersServiceImpl implements IUserService {
   public Users getUserByEmail(String email) {
     return userRepository.findByEmail(email);
   }
+
+  @Override
+  public void updateRentalsUser(Users users) {
+    // Récupérer l'utilisateur existant par email
+    Users existingUser = userRepository.findByEmail(users.getEmail());
+
+    if (existingUser != null) {
+      // Mettre à jour les propriétés de l'utilisateur existant avec les nouvelles données
+      existingUser.setRentals(users.getRentals());
+      // Si vous avez d'autres champs à mettre à jour, vous pouvez le faire ici
+
+      // Sauvegarder les modifications
+      userRepository.save(existingUser);
+    } else {
+      throw new RuntimeException("User not found");
+    }
+  }
+
 }
