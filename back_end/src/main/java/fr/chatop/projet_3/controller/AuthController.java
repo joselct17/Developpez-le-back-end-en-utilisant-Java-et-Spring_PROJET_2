@@ -2,6 +2,7 @@ package fr.chatop.projet_3.controller;
 
 
 import fr.chatop.projet_3.config.JWTService;
+import fr.chatop.projet_3.model.AuthResponse;
 import fr.chatop.projet_3.model.Users;
 import fr.chatop.projet_3.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,12 @@ public class AuthController {
 
 
   @PostMapping("/login")
-  public String getToken(Authentication authentication) {
+  public ResponseEntity<?> getToken(Authentication authentication) {
     String token = jwtService.generateToken(authentication);
-    return token;
+    return ResponseEntity.ok(new AuthResponse(token));
   }
+
+
 
   @PostMapping("/register")
   public ResponseEntity<Users> createUser(@RequestBody Users users) {
