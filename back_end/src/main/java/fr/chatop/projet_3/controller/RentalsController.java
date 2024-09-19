@@ -21,9 +21,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -34,10 +32,13 @@ public class RentalsController {
   private final IUserService usersService;
 
   @GetMapping
-  public ResponseEntity<List<Rentals>> getAllRentals() {
-    List<Rentals> rentals = rentalService.getAllRentals();
-    return ResponseEntity.ok(rentals);
+  public ResponseEntity<Map<String, List<Rentals>>> getAllRentals() {
+    List<Rentals> rentals = rentalService.getAllRentals(); // Récupère la liste des locations
+    Map<String, List<Rentals>> response = new HashMap<>(); // Crée une nouvelle carte
+    response.put("rentals", rentals); // Ajoute la liste des locations avec la clé "Rentals"
+    return ResponseEntity.ok(response); // Retourne la carte comme réponse HTTP
   }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<Rentals> getRentalById(@PathVariable Integer id) {
