@@ -1,6 +1,7 @@
 package fr.chatop.projet_3.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -37,6 +39,7 @@ public class SpringSecurityConfig {
       .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth->auth
           .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+        .requestMatchers("/api/uploads/**").permitAll()
         .anyRequest().authenticated())
       .logout(logout ->
         logout
@@ -69,6 +72,7 @@ public class SpringSecurityConfig {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
+
 
   @Bean
   public WebMvcConfigurer corsConfigurer() {
