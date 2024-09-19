@@ -19,6 +19,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -36,6 +38,11 @@ public class SpringSecurityConfig {
       .authorizeHttpRequests(auth->auth
           .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
         .anyRequest().authenticated())
+      .logout(logout ->
+        logout
+          .permitAll()
+          .logoutSuccessUrl("/api/auth/login")
+      )
       .httpBasic(Customizer.withDefaults())
       .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
       .build();
@@ -61,6 +68,20 @@ public class SpringSecurityConfig {
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+          .allowedOrigins("http://localhost:4200")  // Frontend Angular URL
+          .allowedMethods("GET", "POST", "PUT", "DELETE")
+          .allowedHeaders("*")
+          .allowCredentials(true);
+      }
+    };
   }
 
 
