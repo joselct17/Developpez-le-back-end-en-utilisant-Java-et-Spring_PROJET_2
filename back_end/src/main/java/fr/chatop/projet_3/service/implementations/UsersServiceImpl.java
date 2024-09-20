@@ -78,4 +78,9 @@ public class UsersServiceImpl implements IUserService {
     }
   }
 
+  @Override
+  public Users getOwnerByRentalId(Integer rentalId) {
+    return userRepository.findOwnerByRentalId(rentalId);
+  }
+
 }
