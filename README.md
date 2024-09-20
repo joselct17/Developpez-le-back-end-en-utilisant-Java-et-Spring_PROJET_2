@@ -84,6 +84,10 @@ https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#
 
 SQL script for creating the schema is available `ressources/sql/script.sql`
 
+Update the database configuration in `src/main/resources/application.properties` with your MySQL connection details:
+>spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+>spring.datasource.username=your_mysql_username
+>spring.datasource.password=your_mysql_password
 
 ## API Documentation
 
