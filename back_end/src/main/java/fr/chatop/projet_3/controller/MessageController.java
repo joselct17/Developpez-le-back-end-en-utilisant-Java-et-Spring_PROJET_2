@@ -33,8 +33,10 @@ public class MessageController {
     @ApiResponse(responseCode = "200", description = "Liste des messages récupérée",
       content = { @Content(mediaType = "application/json",
         schema = @Schema(implementation = MessageDto.class)) }),
-    @ApiResponse(responseCode = "400", description = "Paramètres de requête invalides")
-  })
+    @ApiResponse(responseCode = "400", description = "Paramètres de requête invalides",
+        content = { @Content(mediaType = "application/json",
+        schema = @Schema(example = "{ \"error\": \"Paramètres de requête invalides\" }"))})
+          })
   @GetMapping
   public ResponseEntity<List<MessageDto>> getAllMessages(
     @RequestParam(value = "userId", required = false) Integer userId,
