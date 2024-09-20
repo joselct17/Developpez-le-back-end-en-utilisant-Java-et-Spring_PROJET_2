@@ -11,6 +11,7 @@ public class MessageDto {
   private Integer userId;
   private Integer rentalId;
 
+  // Constructeur pour l'utilisation avec @JsonCreator
   @JsonCreator
   public MessageDto(@JsonProperty("message") String message,
                     @JsonProperty("user_id") Integer userId,
@@ -20,4 +21,10 @@ public class MessageDto {
     this.rentalId = rentalId;
   }
 
+  // Nouveau constructeur qui accepte un objet Message
+  public MessageDto(Message message) {
+    this.message = message.getMessage();
+    this.userId = message.getUser().getId(); // Assurez-vous que getUser() retourne l'utilisateur
+    this.rentalId = message.getRental().getId(); // Assurez-vous que getRental() retourne la location
+  }
 }
