@@ -37,13 +37,13 @@ public class RentalsController {
   private final IUserService usersService;
 
   /**
-   * Récupère la liste de toutes les locations
+   * Récupère la liste de toutes les locations.
    */
-  @Operation(summary = "Récupérer toutes les locations")
+  @Operation(summary = "Récupérer toutes les locations", description = "Récupère la liste de toutes les locations sous forme de DTO.")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Liste des locations récupérée",
+    @ApiResponse(responseCode = "200", description = "Liste des locations récupérée avec succès.",
       content = { @Content(mediaType = "application/json",
-        schema = @Schema(implementation = Rentals.class)) })
+        schema = @Schema(implementation = RentalsDto.class)) })
   })
   @GetMapping
   public ResponseEntity<Map<String, List<RentalsDto>>> getAllRentals() {
@@ -58,15 +58,16 @@ public class RentalsController {
     return ResponseEntity.ok(response);
   }
 
+
   /**
-   * Récupère une location par son identifiant
+   * Récupère une location par son identifiant.
    */
-  @Operation(summary = "Récupérer une location par ID")
+  @Operation(summary = "Récupérer une location par ID", description = "Récupère une location spécifique en fonction de son ID.")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Location trouvée",
+    @ApiResponse(responseCode = "200", description = "Location trouvée avec succès.",
       content = { @Content(mediaType = "application/json",
-        schema = @Schema(implementation = Rentals.class)) }),
-    @ApiResponse(responseCode = "404", description = "Location non trouvée")
+        schema = @Schema(implementation = RentalsDto.class)) }),
+    @ApiResponse(responseCode = "404", description = "Location non trouvée.")
   })
   @GetMapping("/{id}")
   public ResponseEntity<RentalsDto> getRentalById(@PathVariable Integer id) {
@@ -81,14 +82,14 @@ public class RentalsController {
 
 
   /**
-   * Crée une nouvelle location
+   * Crée une nouvelle location.
    */
-  @Operation(summary = "Créer une nouvelle location")
+  @Operation(summary = "Créer une nouvelle location", description = "Permet de créer une nouvelle location en fournissant les informations requises.")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "201", description = "Location créée avec succès",
+    @ApiResponse(responseCode = "201", description = "Location créée avec succès.",
       content = { @Content(mediaType = "application/json",
-        schema = @Schema(implementation = Rentals.class)) }),
-    @ApiResponse(responseCode = "400", description = "Erreur dans les données envoyées")
+        schema = @Schema(implementation = RentalsDto.class)) }),
+    @ApiResponse(responseCode = "400", description = "Erreur dans les données fournies.")
   })
   @PostMapping
   public ResponseEntity<RentalsDto> createRental(
@@ -137,6 +138,17 @@ public class RentalsController {
   }
 
 
+
+  /**
+   * Met à jour une location existante.
+   */
+  @Operation(summary = "Mettre à jour une location", description = "Met à jour une location existante avec les nouvelles informations fournies.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Location mise à jour avec succès.",
+      content = { @Content(mediaType = "application/json",
+        schema = @Schema(implementation = RentalsDto.class)) }),
+    @ApiResponse(responseCode = "404", description = "Location non trouvée.")
+  })
   @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
   public ResponseEntity<RentalsDto> updateRental(
     @PathVariable Integer id,
@@ -179,23 +191,6 @@ public class RentalsController {
 
     // Retourner le RentalsDto
     return ResponseEntity.ok(updatedRentalDto);
-  }
-
-
-
-
-  /**
-   * Supprime une location par ID
-   */
-  @Operation(summary = "Supprimer une location")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "204", description = "Location supprimée avec succès"),
-    @ApiResponse(responseCode = "404", description = "Location non trouvée")
-  })
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteRental(@PathVariable Integer id) {
-    rentalService.deleteRental(id);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
 }
