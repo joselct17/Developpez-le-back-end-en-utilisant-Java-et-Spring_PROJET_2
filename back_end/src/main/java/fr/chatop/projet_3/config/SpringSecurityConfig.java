@@ -39,14 +39,13 @@ public class SpringSecurityConfig {
       .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth->auth
           .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-        .requestMatchers("/api/uploads/**").permitAll()
+        .requestMatchers("/uploads/**").permitAll()
         .anyRequest().authenticated())
       .logout(logout ->
         logout
           .permitAll()
           .logoutSuccessUrl("/api/auth/login")
       )
-      .httpBasic(Customizer.withDefaults())
       .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
       .build();
   }
@@ -66,11 +65,6 @@ public class SpringSecurityConfig {
   @Bean
   public JwtEncoder jwtEncoder() {
     return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
   }
 
 
