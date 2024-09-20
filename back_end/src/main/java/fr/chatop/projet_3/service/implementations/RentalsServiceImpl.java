@@ -1,6 +1,7 @@
 package fr.chatop.projet_3.service.implementations;
 
 import fr.chatop.projet_3.model.Rentals;
+import fr.chatop.projet_3.model.Users;
 import fr.chatop.projet_3.model.dto.RentalsDto;
 import fr.chatop.projet_3.repository.IRentalsRepository;
 import fr.chatop.projet_3.service.interfaces.IRentalsService;
@@ -30,6 +31,8 @@ public class RentalsServiceImpl implements IRentalsService {
 
   @Override
   public Rentals createRental(Rentals rental) {
+
+
     rental.setCreatedAt(LocalDate.now());
     return rentalsRepository.save(rental);
   }
