@@ -27,6 +27,24 @@ public class MessageServiceImpl implements IMessageService {
     return messageRepository.findAll();
   }
 
+  @Override
+  public List<Message> getMessages(Integer userId, Integer rentalId) {
+    // Filtrer les messages en fonction de ce qui est fourni
+    if (userId != null && rentalId != null) {
+      // Filtrer par userId et rentalId
+      return messageRepository.findByUserIdAndRentalId(userId, rentalId);
+    } else if (userId != null) {
+      // Filtrer par userId
+      return messageRepository.findByUserId(userId);
+    } else if (rentalId != null) {
+      // Filtrer par rentalId
+      return messageRepository.findByRentalId(rentalId);
+    } else {
+      // Si aucun filtre n'est fourni, renvoyer tous les messages
+      return messageRepository.findAll();
+    }
+  }
+
   public Optional<Message> getMessageById(Integer id) {
     return messageRepository.findById(id);
   }
