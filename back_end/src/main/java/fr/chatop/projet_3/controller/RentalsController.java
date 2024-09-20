@@ -48,15 +48,21 @@ public class RentalsController {
   @GetMapping
   public ResponseEntity<Map<String, List<RentalsDto>>> getAllRentals() {
     List<Rentals> rentals = rentalService.getAllRentals();
-    // Convertir chaque entité Rentals en RentalsDto
+
+    // Convertir chaque entité Rentals en RentalsDto avec l'ID du propriétaire
     List<RentalsDto> rentalsDtoList = rentals.stream()
-      .map(RentalsDto::new)
+      .map(rental -> {
+        Users owner = usersService.getOwnerByRentalId(rental.getId()); // Récupérer le propriétaire
+        return new RentalsDto(rental, owner); // Utiliser le constructeur avec Rentals et Users
+      })
       .toList();
+
     Map<String, List<RentalsDto>> response = new HashMap<>();
     response.put("rentals", rentalsDtoList);
 
     return ResponseEntity.ok(response);
   }
+
 
 
   /**
@@ -75,12 +81,15 @@ public class RentalsController {
   public ResponseEntity<RentalsDto> getRentalById(@PathVariable Integer id) {
     Optional<Rentals> rentalOpt = rentalService.getRentalById(id);
     if (rentalOpt.isPresent()) {
-      RentalsDto rentalDto = new RentalsDto(rentalOpt.get());
+      Rentals rental = rentalOpt.get();
+      Users owner = usersService.getOwnerByRentalId(rental.getId()); // Récupérer le propriétaire
+      RentalsDto rentalDto = new RentalsDto(rental, owner); // Utiliser le constructeur avec Rentals et Users
       return ResponseEntity.ok(rentalDto);
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
   }
+
 
 
   /**
@@ -113,10 +122,12 @@ public class RentalsController {
     String email = authentication.getName();
     Users currentUser = usersService.getUserByEmail(email);
 
+    // Ajout de la location au propriétaire
     List<Rentals> rentals = currentUser.getRentals();
     rentals.add(rental);
     currentUser.setRentals(rentals);
 
+    // Gestion du fichier d'image
     if (!picture.isEmpty()) {
       String fileName = UUID.randomUUID().toString() + "_" + picture.getOriginalFilename();
       String uploadDir = "uploads";
@@ -136,11 +147,10 @@ public class RentalsController {
     rentalService.createRental(rental);
     usersService.updateRentalsUser(currentUser);
 
-    // Retourner un RentalsDto après la création
-    RentalsDto rentalDto = new RentalsDto(rental);
+    // Retourner un RentalsDto avec l'utilisateur propriétaire
+    RentalsDto rentalDto = new RentalsDto(rental, currentUser);
     return ResponseEntity.status(HttpStatus.CREATED).body(rentalDto);
   }
-
 
 
   /**
@@ -168,7 +178,7 @@ public class RentalsController {
     Rentals rental = rentalService.getRentalById(id)
       .orElseThrow(() -> new RuntimeException("Rental not found"));
 
-    // Mettre à jour les informations du Rentals avec les nouvelles valeurs
+    // Mettre à jour les informations du Rentals
     rental.setName(name);
     rental.setSurface(surface);
     rental.setPrice(price);
@@ -190,13 +200,17 @@ public class RentalsController {
     }
 
     // Sauvegarder les modifications via le service
-    Rentals updatedRental = rentalService.updateRental(rental);  // Utiliser directement Rentals
+    Rentals updatedRental = rentalService.updateRental(rental);
 
-    // Convertir l'entité Rentals mise à jour en RentalsDto
-    RentalsDto updatedRentalDto = new RentalsDto(updatedRental);
+    // Récupérer l'utilisateur propriétaire
+    Users owner = usersService.getOwnerByRentalId(rental.getId());
+
+    // Convertir l'entité Rentals mise à jour en RentalsDto avec le propriétaire
+    RentalsDto updatedRentalDto = new RentalsDto(updatedRental, owner);
 
     // Retourner le RentalsDto
     return ResponseEntity.ok(updatedRentalDto);
   }
+
 
 }
