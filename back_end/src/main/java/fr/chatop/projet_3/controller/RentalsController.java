@@ -67,7 +67,9 @@ public class RentalsController {
     @ApiResponse(responseCode = "200", description = "Location trouvée avec succès.",
       content = { @Content(mediaType = "application/json",
         schema = @Schema(implementation = RentalsDto.class)) }),
-    @ApiResponse(responseCode = "404", description = "Location non trouvée.")
+    @ApiResponse(responseCode = "404", description = "Location non trouvée.",
+      content = { @Content(mediaType = "application/json",
+        schema = @Schema(example = "{ \"error\": \"Location not found\" }")) })
   })
   @GetMapping("/{id}")
   public ResponseEntity<RentalsDto> getRentalById(@PathVariable Integer id) {
@@ -89,7 +91,9 @@ public class RentalsController {
     @ApiResponse(responseCode = "201", description = "Location créée avec succès.",
       content = { @Content(mediaType = "application/json",
         schema = @Schema(implementation = RentalsDto.class)) }),
-    @ApiResponse(responseCode = "400", description = "Erreur dans les données fournies.")
+    @ApiResponse(responseCode = "404", description = "Location non trouvée.",
+      content = { @Content(mediaType = "application/json",
+        schema = @Schema(example = "{ \"error\": \"Location not found\" }")) })
   })
   @PostMapping
   public ResponseEntity<RentalsDto> createRental(
@@ -147,7 +151,9 @@ public class RentalsController {
     @ApiResponse(responseCode = "200", description = "Location mise à jour avec succès.",
       content = { @Content(mediaType = "application/json",
         schema = @Schema(implementation = RentalsDto.class)) }),
-    @ApiResponse(responseCode = "404", description = "Location non trouvée.")
+    @ApiResponse(responseCode = "404", description = "Location non trouvée.",
+      content = { @Content(mediaType = "application/json",
+        schema = @Schema(example = "{ \"error\": \"Location not found\" }")) })
   })
   @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
   public ResponseEntity<RentalsDto> updateRental(
