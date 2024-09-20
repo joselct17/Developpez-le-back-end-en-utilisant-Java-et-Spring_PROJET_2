@@ -11,7 +11,7 @@ import java.util.Optional;
 
    List<Message> getAllMessages();
 
-   Optional<Message> getMessageById(Integer id);
+   List<Message> getMessages(Integer userId, Integer rentalId);
 
    Message createMessage(MessageDto messageDto, Integer userId, Integer rentalId);
 
