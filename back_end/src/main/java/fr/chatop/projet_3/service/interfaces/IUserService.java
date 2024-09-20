@@ -21,4 +21,6 @@ import java.util.Optional;
    Users getUserByEmail(String email);
 
    void updateRentalsUser(Users users);
+
+   Users getOwnerByRentalId(Integer id);
  }
