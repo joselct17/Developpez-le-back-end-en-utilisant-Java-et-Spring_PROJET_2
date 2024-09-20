@@ -1,6 +1,7 @@
 package fr.chatop.projet_3.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import fr.chatop.projet_3.model.Users;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
@@ -17,16 +18,20 @@ public class JWTService {
 
   private final JwtEncoder jwtEncoder;
 
-  public String generateToken(Authentication authentication) {
+  public String generateTokenForUser(Users user) {
     Instant now = Instant.now();
     JwtClaimsSet claims = JwtClaimsSet.builder()
       .issuer("self")
       .issuedAt(now)
       .expiresAt(now.plus(1, ChronoUnit.DAYS))
-      .subject(authentication.getName())
+      .subject(user.getEmail()) // Utilisation de l'email comme sujet
       .build();
-    JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
+    JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(
+      JwsHeader.with(MacAlgorithm.HS256).build(),
+      claims
+    );
     return this.jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
   }
+
 
 }
