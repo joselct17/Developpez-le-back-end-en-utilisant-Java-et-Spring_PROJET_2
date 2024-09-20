@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class UsersServiceImpl implements IUserService {
   @Override
   public Users createUser(Users user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setCreatedAt(LocalDateTime.now());
+    user.setCreatedAt(LocalDate.now());
     return userRepository.save(user);
   }
 
@@ -44,7 +45,7 @@ public class UsersServiceImpl implements IUserService {
       existingUser.setName(registerUserDto.getName());
       existingUser.setEmail(registerUserDto.getEmail());
       existingUser.setPassword(registerUserDto.getPassword());
-      existingUser.setUpdatedAt(LocalDateTime.now());
+      existingUser.setUpdatedAt(LocalDate.now());
       return userRepository.save(existingUser);
     }
     return null;
