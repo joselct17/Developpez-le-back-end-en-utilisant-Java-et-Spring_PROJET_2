@@ -72,11 +72,12 @@ public class MessageController {
     @ApiResponse(responseCode = "400", description = "Données invalides fournies")
   })
   @PostMapping
-  public ResponseEntity<Message> createMessage(@RequestBody MessageDto messageDto) {
+  public ResponseEntity<MessageDto> createMessage(@RequestBody MessageDto messageDto) {
     Integer userId = messageDto.getUserId();
     Integer rentalId = messageDto.getRentalId();
     Message createdMessage = messageService.createMessage(messageDto, userId, rentalId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
+    MessageDto createdMessageDto = new MessageDto(createdMessage);
+    return ResponseEntity.status(HttpStatus.CREATED).body(createdMessageDto);
   }
 
 }
