@@ -45,6 +45,7 @@ public class Rentals {
   @Column(name = "updated_at")
   private LocalDate updatedAt;
 
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDate.now();
