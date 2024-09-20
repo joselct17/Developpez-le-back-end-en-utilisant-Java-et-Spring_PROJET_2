@@ -177,7 +177,7 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:3001/api/rentals/1",
+							"raw": "localhost:3001/api/rentals",
 							"host": [
 								"localhost"
 							],
@@ -256,7 +256,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3001/api/messages/",
+							"raw": "localhost:3001/api/messages",
 							"host": [
 								"localhost"
 							],
