@@ -7,6 +7,7 @@ import fr.chatop.projet_3.service.interfaces.IRentalsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,26 +30,17 @@ public class RentalsServiceImpl implements IRentalsService {
 
   @Override
   public Rentals createRental(Rentals rental) {
-    rental.setCreatedAt(LocalDateTime.now());
+    rental.setCreatedAt(LocalDate.now());
     return rentalsRepository.save(rental);
   }
 
 
   @Override
-  public Rentals updateRental(Integer id, RentalsDto rentalDto) {
-    Optional<Rentals> existingRentalOpt = rentalsRepository.findById(id);
-    if (existingRentalOpt.isPresent()) {
-      Rentals existingRental = existingRentalOpt.get();
-      existingRental.setName(rentalDto.getName());
-      existingRental.setSurface(rentalDto.getSurface());
-      existingRental.setPrice(rentalDto.getPrice());
-      existingRental.setPicture(rentalDto.getPicture());
-      existingRental.setDescription(rentalDto.getDescription());
-      existingRental.setUpdatedAt(LocalDateTime.now());
-      return rentalsRepository.save(existingRental);
-    }
-    return null;
+  public Rentals updateRental(Rentals rental) {
+    rental.setUpdatedAt(LocalDate.now());  // Mettre à jour le champ "updatedAt"
+    return rentalsRepository.save(rental);    // Sauvegarder les modifications
   }
+
 
     @Override
   public void deleteRental(Integer id) {
