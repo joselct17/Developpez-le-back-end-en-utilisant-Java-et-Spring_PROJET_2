@@ -16,6 +16,6 @@ public interface IRentalsService {
 
   void deleteRental(Integer id);
 
-  Rentals updateRental(Integer id, RentalsDto rentalDto);
+  Rentals updateRental( Rentals rentals);
 
 }
