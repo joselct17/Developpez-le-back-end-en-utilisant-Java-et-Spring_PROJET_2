@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -33,10 +34,10 @@ public class Users {
   private String password;
 
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDate createdAt;
 
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private LocalDate updatedAt;
 
   @OneToMany
   private List<Rentals> rentals;
@@ -44,11 +45,11 @@ public class Users {
 
   @PrePersist
   protected void onCreate() {
-    this.createdAt = LocalDateTime.now();
+    this.createdAt = LocalDate.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    this.updatedAt = LocalDateTime.now();
+    this.updatedAt = LocalDate.now();
   }
 }
