@@ -174,9 +174,30 @@ public class RentalsController {
     @RequestParam("description") String description,
     @RequestParam(value = "picture", required = false) MultipartFile picture) throws IOException {
 
+    // Récupérer l'utilisateur authentifié (par exemple à partir du JWT)
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentUsername = authentication.getName(); // Récupérer le nom d'utilisateur ou l'email depuis le token JWT
+
+    // Récupérer l'utilisateur authentifié en fonction de son username
+    Users currentUser = usersService.getUserByEmail(currentUsername);
+    if (currentUser == null) {
+      throw new RuntimeException("User not found");
+    }
     // Récupérer la location à partir de l'ID
     Rentals rental = rentalService.getRentalById(id)
       .orElseThrow(() -> new RuntimeException("Rental not found"));
+
+    // Récupérer le propriétaire de la location
+    Users ownerId = usersService.getOwnerByRentalId(rental.getId());
+    if (ownerId == null) {
+      throw new RuntimeException("Owner not found");
+    }
+
+    // Vérifier si l'utilisateur authentifié est bien le propriétaire de la location
+    if (!ownerId.getId().equals(currentUser.getId())) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Accès interdit si l'utilisateur n'est pas le propriétaire
+    }
+
 
     // Mettre à jour les informations du Rentals
     rental.setName(name);
